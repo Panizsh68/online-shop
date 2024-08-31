@@ -4,7 +4,9 @@ import {  IsNotEmpty, IsNumber } from "class-validator"
 export class ProductDto {
     id: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({
+        message: 'quantity is empty'
+    })
     @IsNumber()
     quantity: number;
 }

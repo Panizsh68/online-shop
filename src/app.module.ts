@@ -17,8 +17,7 @@ import { OrderModule } from './order/order.module';
 import { OrderSchema } from './schema/order.schema';
 import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config';
-import { AppConfigModule } from 'config/config.module';
-import configuration from 'config/configuration';
+import configuration from './config/configuration';
 import { UserSchema } from './schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { OtpService } from './otp/otp.service';
@@ -31,16 +30,20 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-          uri: configService.get<string>('mongodbUrl')
+         uri: configService.get<string>('database'),   
       }),
-      inject: [ConfigService],
+      inject: [ConfigService],   
+
     }),
-    ConfigModule.forRoot({ isGlobal: true,
-      load: [configuration] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
+
     MongooseModule.forFeature([{ name: 'Product', schema: ProductSchema}]),
     MongooseModule.forFeature([{ name: 'Order', schema: OrderSchema}]),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema}]),
-    UserModule, ProductModule, AdminModule, OrderModule, AppConfigModule, OtpModule, AuthModule
+    UserModule, ProductModule, AdminModule, OrderModule, OtpModule, AuthModule
           ],
   controllers: [AppController, UserController, ProductController, AdminController, AuthController],
   providers: [AppService, UserService, ProductService, AdminService, OrderService, ConfigService, JwtService, OtpService, AuthService],

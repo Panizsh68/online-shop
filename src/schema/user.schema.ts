@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import { Document, isObjectIdOrHexString, ObjectId } from 'mongoose'
 import { Role } from 'src/constant/role.constant';
 
 export type UserDocument = User & Document
 
 @Schema()
 export class User {
+    @Prop({ type: String })
+    _id: string
     
     @Prop({ required: true })
     username: string;

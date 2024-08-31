@@ -2,7 +2,9 @@ import { IsNotEmpty, IsPhoneNumber} from "class-validator";
 
 
 export class LoginDto {
-    @IsNotEmpty()
+    @IsNotEmpty({
+        message: 'phone number is empty'
+    })
     @IsPhoneNumber()
     phoneNumber: string;
 }

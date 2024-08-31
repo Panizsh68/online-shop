@@ -1,7 +1,9 @@
 import { IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
 
 export class VerifyOtpDto {
-    @IsNotEmpty()
+    @IsNotEmpty({
+        message: 'phone number is empty'
+    })
     @IsPhoneNumber()
     phoneNumber: string
 
