@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { redisConfig } from './config/redis.config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 dotenv.config();
 
@@ -25,7 +26,13 @@ async function bootstrap() {
     },
   );
   await app.startAllMicroservices();
-  
+  const config = new DocumentBuilder()
+  .setTitle('Online Shop')
+  .setVersion('1.0')
+  .addTag('online shop')
+  .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port');
   await app.listen(port);
